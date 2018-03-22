@@ -1,0 +1,16 @@
+﻿<Window x:Class="ProjectPeladen.aoe3_window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjectPeladen"
+        mc:Ignorable="d"
+        Title="ProjectPeladen - Age of Empires III" Height="389.255" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="22,0" VerticalAlignment="Top" HorizontalAlignment="Center" UseLayoutRounding="False" Width="350" Height="348.05">
+        <GroupBox Header="Lokasi GameDir" HorizontalAlignment="Left" Height="109" Margin="10,4,0,0" VerticalAlignment="Top" Width="329"/>
+        <Button x:Name="aoe3_Launch_Button" Content="Launch Game" HorizontalAlignment="Left" Height="54" Margin="10,284,0,0" VerticalAlignment="Top" Width="329" Click="aoe3_Launch_Click"/>
+        <Button x:Name="aoe3_BrowseForPath_Button" Content="Pilih GameDir" HorizontalAlignment="Left" Height="32" Margin="19,67,0,0" VerticalAlignment="Top" Width="311" Click="aoe3_Path_Click"/>
+        <TextBox x:Name="aoe3_Path_Textbox" HorizontalAlignment="Left" Height="24" Margin="19,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" IsReadOnly="True"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,9 @@
+﻿<Application x:Class="ProjectPeladen.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProjectPeladen"
+             StartupUri="window_main.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
