@@ -20,7 +20,7 @@ namespace ProjectPeladen
             CoH_ModeKentang_CheckBox.IsChecked = Convert.ToBoolean(Function.GetIniValue(section: "CoH", key: "modeKentang"));
             CoH_Resolusi_ComboBox.SelectedIndex = Convert.ToInt16(Function.GetIniValue(section: "CoH", key: "modeKentangResolusi"));
 
-            // kontrol GUI, nek gamedir durung defined, kabeh opsi bakal disabled
+            // kontrol GUI. jika "gameDir" tidak ada data, maka semua opsi akan disabled
             if (CoH_Path_Textbox.Text == "")
             {
                 CoH_isEnabledControl(false);
@@ -28,7 +28,16 @@ namespace ProjectPeladen
             }
             else
             {
-                CoH_Mod_ComboBoxIteminitialize(); // nek gamedir wes defined, engko listing mod_combobox bakal mlaku
+                if (Function.CheckLastGameDir(CoH_Path_Textbox.Text, "RelicCOH.exe") == true)
+                {
+                    CoH_Mod_ComboBoxIteminitialize(); // nek gamedir wes defined, engko listing mod_combobox bakal mlaku
+                }
+                else
+                {
+                    CoH_isEnabledControl(false);
+                    CoH_Resolusi_ComboBoxIsEnabledControl(false);
+                    CoH_Path_Textbox.Text = "";
+                }
             }
         }
 
@@ -120,6 +129,11 @@ namespace ProjectPeladen
                     param = "-nomovies";
                     break;
 
+                case "Blitzkrieg":
+                    exe = "RelicCOH.exe";
+                    param = "-dev -mod Blitzkrieg -nomovies";
+                    break;
+
                 case "Joint Operations":
                     exe = "jointops.exe";
                     param = null;
@@ -193,6 +207,11 @@ namespace ProjectPeladen
         {
             CoH_Mod_ComboBox.Items.Add("Company of Heroes");
 
+            if (Directory.Exists(CoH_Path_Textbox.Text + "Blitzkrieg"))
+            {
+                CoH_Mod_ComboBox.Items.Add("Blitzkrieg");
+            }
+
             if (Directory.Exists(CoH_Path_Textbox.Text + "ModernCombat"))
             {
                 CoH_Mod_ComboBox.Items.Add("Modern Combat");
@@ -224,7 +243,7 @@ namespace ProjectPeladen
             }
 
             ///decide nek durung ono seng kesave bakal nganggo default,nek ono kesave yo nganggo iku
-            if (Function.GetIniValue(section: "CoH", key: "mode") == null)
+            if (Function.GetIniValue(section: "CoH", key: "mode") == "")
             {
                 CoH_Mod_ComboBox.Text = "Company of Heroes";
             }

@@ -1,6 +1,10 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
 
+/// <summary>
+/// abandoned game launcher
+/// </summary>
+
 namespace ProjectPeladen
 {
     public partial class ArmAgold_window : Window

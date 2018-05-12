@@ -1,6 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
 
+/// <summary>
+/// TODO: reg add SN aoe3, homecity card unlocked template
+/// </summary>
+
 namespace ProjectPeladen
 {
     public partial class aoe3_window : Window

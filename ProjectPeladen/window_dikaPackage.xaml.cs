@@ -58,8 +58,8 @@ namespace ProjectPeladen
                     }
                     else
                     {
-                        extractDir = fbd.SelectedPath;
-                        Function.SetIniValue(section: game, key: "gameDir", value: fbd.SelectedPath);
+                        extractDir = fbd.SelectedPath + "\\"; //nambah slash "\"
+                        Function.SetIniValue(section: game, key: "gameDir", value: extractDir); //ben ngeshare karo launcher game
                     }
                 }
                 else

@@ -10,6 +10,24 @@ namespace ProjectPeladen
 {
     public class Function
     {
+        /// <summary>
+        /// digunakan untuk memastikan bahwa data gameDir yang disimpan masih valid
+        /// </summary>
+        /// <param name="dir">dari data "gameDir"</param>
+        /// <param name="filename">exe filename</param>
+        /// <returns>true jika exe file ditemukan, flase jika tidak ditemukan</returns>
+        public static bool CheckLastGameDir(string dir, string filename)
+        {
+            if (File.Exists(dir + filename) == true)
+            {
+                return true;    // file ditemukan
+            }
+            else
+            {
+                return false;   // file tidak ditemukan
+            }
+        }
+
         public static void InitConfig()
         {
             FileIniDataParser Ini = new FileIniDataParser();
@@ -29,7 +47,7 @@ namespace ProjectPeladen
             RunExe.StartInfo.Arguments = param;
             RunExe.Start();
 
-            if (cpu0 == true)
+            if (cpu0 == true)   // untuk membuat process berjalan pada 1 thread
             {
                 RunExe.ProcessorAffinity = (System.IntPtr)1;
             }

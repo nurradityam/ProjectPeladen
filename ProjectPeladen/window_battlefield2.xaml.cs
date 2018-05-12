@@ -4,6 +4,10 @@ using System.IO;
 using System.Windows.Forms;
 using System.Windows.Controls;
 
+/// <summary>
+/// bug: ganti nama player tdk bekerja
+/// </summary>
+
 namespace ProjectPeladen
 {
     public partial class Battlefield2_window : Window
