@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using Ionic.Zip;
 using System.ComponentModel;
+using System;
 
 namespace ProjectPeladen
 {
@@ -44,7 +45,7 @@ namespace ProjectPeladen
             string addonKey = (string)manifestFile["addonKey"];
             string extractDir = (string)manifestFile["extractDir"];
 
-            if (extractDir == "getGameDir")
+            if (extractDir == "getGameDir") // string untuk memicu memilih folder gameDir secara otomatis
             {
                 if (Function.GetIniValue(section: game, key: "gameDir") == null)
                 {
@@ -76,6 +77,8 @@ namespace ProjectPeladen
             {
                 WorkerReportsProgress = true
             };
+
+            worker.WorkerReportsProgress = true;
             worker.ProgressChanged += (o, e) => { progressBar.Value = e.ProgressPercentage; };
             worker.DoWork += (o, e) =>
             {
@@ -87,9 +90,9 @@ namespace ProjectPeladen
                     {
                         file.Extract(extractDir, ExtractExistingFileAction.OverwriteSilently);
                         percentComplete++;
+                        
                         worker.ReportProgress(percentComplete);
 
-                        /// butuh invoke soale bedo thread
                         this.Dispatcher.Invoke(() =>
                         {
                             progressBar.Minimum = 0;
@@ -97,7 +100,7 @@ namespace ProjectPeladen
 
                             if (progressBar.Value == progressBar.Maximum)
                             {
-                                
+
                                 #region REGISTER PACKAGE TO CONFIG
                                 if (addonKey != "")
                                 {
@@ -112,6 +115,7 @@ namespace ProjectPeladen
                     }
                 }
             };
+
             worker.RunWorkerAsync();
             #endregion
         }
