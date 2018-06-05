@@ -142,9 +142,5 @@ namespace ProjectPeladen
 
         }
 
-        public void SetAppConfig()
-        {
-            //System.Configuration.ConfigurationSettings.AppSettings.Add();
-        }
     }
 }

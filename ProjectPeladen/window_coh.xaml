@@ -23,6 +23,9 @@
         </ComboBox>
         <Label x:Name="CoH_Resolusi_Label" Content="Resolusi:" HorizontalAlignment="Left" Height="26" Margin="183,269,0,0" VerticalAlignment="Top" Width="58"/>
         <CheckBox x:Name="CoH_ModeKentang_CheckBox" Content="Mode Kentang" Height="16" Margin="19,275,228,0" VerticalAlignment="Top" Checked="CoH_ModeKentang_CheckBox_Checked" Unchecked="CoH_ModeKentang_CheckBox_Unchecked"/>
+        <GroupBox Header="Tools" HorizontalAlignment="Left" Height="59" Margin="11,310,0,0" VerticalAlignment="Top" Width="330">
+            <Button x:Name="CoH_ArchiveReplay_Button" Content="Arsipkan Replay" HorizontalAlignment="Left" Height="26" Margin="4,5,0,0" VerticalAlignment="Top" Width="309" Click="CoH_ArchiveReplay_Button_Click"/>
+        </GroupBox>
 
     </Grid>
 </Window>

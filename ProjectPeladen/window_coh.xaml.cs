@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace ProjectPeladen
 {
@@ -186,6 +187,23 @@ namespace ProjectPeladen
         {
             CoH_Resolusi_ComboBoxIsEnabledControl(false);
         }
+
+        private void CoH_ArchiveReplay_Button_Click(object sender, RoutedEventArgs e)
+        {   
+            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Company of Heroes\playback\"))
+            {
+                string lokasiRecordFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Company of Heroes\playback\";
+                string lokasiHasilCompressRecordFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\CoH_ReplayBackup_" + Environment.MachineName + "_" + DateTime.Now.ToString("yyyyMMddTHHmmss") + ".zip";
+
+                ZipFile.CreateFromDirectory(lokasiRecordFolder, lokasiHasilCompressRecordFolder);
+
+                System.Windows.MessageBox.Show("File Berhasil dibuat." + "\n" + "\n" + lokasiHasilCompressRecordFolder, "ProjectPeladen - Arsip Replay CoH");
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Arsip gagal." + "\n" + "file replay tidak ditemukan.", "ProjectPeladen - Arsip Replay CoH");
+            }
+        }
         #endregion
 
         #region COH WINDOW METHOD
@@ -195,6 +213,7 @@ namespace ProjectPeladen
             CoH_Mod_ComboBox.IsEnabled = status;
             CoH_PlayerName_Textbox.IsEnabled = status;
             CoH_ModeKentang_CheckBox.IsEnabled = status;
+            CoH_ArchiveReplay_Button.IsEnabled = status;
         }
 
         private void CoH_Resolusi_ComboBoxIsEnabledControl(bool status)
