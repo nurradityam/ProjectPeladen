@@ -8,12 +8,10 @@ namespace ProjectPeladen
 {
     public partial class CoH_window : Window
     {
-        // instance here
-        OpenFileDialog ofd = new OpenFileDialog();
-
         public CoH_window()
         {
             InitializeComponent();
+            // secara default, semua kondisi object isEnabled = true
 
             // load last config
             CoH_Path_Textbox.Text = Function.GetIniValue(section: "CoH", key: "gameDir");
@@ -29,42 +27,53 @@ namespace ProjectPeladen
             }
             else
             {
+                // checking terhadap string gameDir. jika tidak valid maka semua opsi akan disabled
                 if (Function.CheckLastGameDir(CoH_Path_Textbox.Text, "RelicCOH.exe") == true)
                 {
                     CoH_Mod_ComboBoxIteminitialize(); // nek gamedir wes defined, engko listing mod_combobox bakal mlaku
                 }
                 else
                 {
+                    // mereset textbox gameDir
                     CoH_isEnabledControl(false);
                     CoH_Resolusi_ComboBoxIsEnabledControl(false);
                     CoH_Path_Textbox.Text = "";
                 }
+            }
+
+            // kontrol GUI. jika last save mode kentang sudah diaktifkan, maka combobox resolusi isEnabled = true
+            if (CoH_ModeKentang_CheckBox.IsChecked == true)
+            {
+                CoH_Resolusi_ComboBoxIsEnabledControl(true);
             }
         }
 
         #region COH WINDOW EVENT
         private void CoH_Path_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+
             ofd.Title = "Pilih lokasi file \"RelicCOH.exe\"";
             ofd.Filter = "|RelicCOH.exe";
 
             switch (ofd.ShowDialog())
             {
                 case System.Windows.Forms.DialogResult.OK:
-                    CoH_Path_Textbox.Text = ofd.FileName.Remove(ofd.FileName.Length - 12); // hasil path seko dialog box bakal di kurangi X char ko mburi
+                    /// RECODE ME, hawane .net ndue fuction dingo ngubah fullpath dadi folderpath
+                    CoH_Path_Textbox.Text = ofd.FileName.Remove(ofd.FileName.Length - 12); // hasil path dari dialog box akan dikurangi X char dari kanan
 
                     CoH_isEnabledControl(true);
                     CoH_Mod_ComboBoxIteminitialize();
                     break;
 
-                case System.Windows.Forms.DialogResult.Cancel: // ben ora crash pas user klik selain OK
+                default:
                     break;
             }
         }
 
         private void CoH_Launch_Click(object sender, RoutedEventArgs e)
         {
-            //save used config
+            // menyimpan config
             Function.SetIniValue(section: "CoH", key: "gameDir", value: CoH_Path_Textbox.Text);
             Function.SetIniValue(section: "CoH", key: "mode",value: CoH_Mod_ComboBox.Text);
             Function.SetIniValue(section: "CoH", key: "modeKentang", value: Convert.ToString(CoH_ModeKentang_CheckBox.IsChecked));
@@ -76,7 +85,7 @@ namespace ProjectPeladen
             #region MODE KENTANG
             if (CoH_ModeKentang_CheckBox.IsChecked == true)
             {
-                Function.ExtractEmbeddedResourceText("CoH.templatePotato_configuration.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\configuration.lua"));
+                Function.ExtractEmbeddedResourceText("CoH.templatePotato_configuration.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\configuration.lua")); // mengkopi preset setting
 
                 string pilihanResolusiWidth = "800";
                 string pilihanResolusiHeight= "600";
@@ -117,17 +126,17 @@ namespace ProjectPeladen
             switch (CoH_Mod_ComboBox.Text)
             {
                 case "Company of Heroes":
-                    /// ngeoverwrite campaignstate.lua ke savegame user
+                    // overwrite campaignstate.lua ke savegame user
                     Function.ExtractEmbeddedResourceText("CoH.campaignLuaUnlock.COH_campaignstate.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\Savegames\RelicCOH\Campaigns\coh\campaignstate.lua"));
                     Function.ExtractEmbeddedResourceText("CoH.campaignLuaUnlock.CXP1_campaignstate.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\Savegames\RelicCOH\Campaigns\cxp1\campaignstate.lua"));
                     Function.ExtractEmbeddedResourceText("CoH.campaignLuaUnlock.CXP2_campaignstate.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\Savegames\RelicCOH\Campaigns\cxp2\campaignstate.lua"));
                     Function.ExtractEmbeddedResourceText("CoH.campaignLuaUnlock.DLC1_campaignstate.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\Savegames\RelicCOH\Campaigns\dlc1\campaignstate.lua"));
 
-                    /// ngeoverwrite playercfg.lua, dingo ngapusi last fps(ben dadi ijo ping e)
+                    // overwrite playercfg.lua untuk membuat last fps menjadi hijau
                     Function.ExtractEmbeddedResourceText("CoH.playercfg.lua", (System.Environment.GetEnvironmentVariable("USERPROFILE") + @"\Documents\My Games\Company of Heroes\playercfg.lua"));
 
                     exe = "RelicCOH.exe";
-                    param = "-nomovies";
+                    param = "-dev -nomovies";
                     break;
 
                 case "Blitzkrieg":
@@ -261,7 +270,8 @@ namespace ProjectPeladen
                 CoH_Mod_ComboBox.Items.Add("The Far East");
             }
 
-            ///decide nek durung ono seng kesave bakal nganggo default,nek ono kesave yo nganggo iku
+            // jika dari config user belum memilih mod, maka default akan memilih CoH
+            /// RECODE ME, mungkin nek default UI ne wes diadd CoH, dadine gausah nulis kode iki
             if (Function.GetIniValue(section: "CoH", key: "mode") == "")
             {
                 CoH_Mod_ComboBox.Text = "Company of Heroes";
