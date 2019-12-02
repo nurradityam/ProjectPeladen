@@ -22,6 +22,12 @@ namespace ProjectPeladen
                     this.Close();
                     break;
 
+                case "Battlefield Bad Company 2":
+                    bfbc2_window bfbc2_window = new bfbc2_window();
+                    bfbc2_window.Show();
+                    this.Close();
+                    break;
+
                 case "Company of Heroes":
                     CoH_window CoH_window = new CoH_window();
                     CoH_window.Show();

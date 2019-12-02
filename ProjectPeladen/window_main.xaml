@@ -11,6 +11,7 @@
         <ComboBox x:Name="Main_ComboBox" HorizontalAlignment="Left" Height="27" Margin="10,41,0,0" VerticalAlignment="Top" Width="308" SelectedIndex="0">
             <ComboBoxItem Content="Company of Heroes"/>
             <ComboBoxItem Content="Battlefield 2"/>
+            <ComboBoxItem Content="Battlefield Bad Company 2"/>
             <!--ComboBoxItem Content="ArmA Gold"/-->
             <!--ComboBoxItem Content="Age of Empires III"/-->
         </ComboBox>
