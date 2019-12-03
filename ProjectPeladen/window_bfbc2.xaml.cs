@@ -26,9 +26,9 @@ namespace ProjectPeladen
             Bfbc2_ModeKentang_CheckBox.IsChecked = Properties.Settings.Default.BFBC2_ModeKentang;
 
             if (Bfbc2_Path_Textbox.Text != null)
-                Bfbc2_isEnabledControl(false);
-            else
                 Bfbc2_isEnabledControl(true);
+            else
+                Bfbc2_isEnabledControl(false);
 
             Bfbc2_ModeKentang_Control();
         }
