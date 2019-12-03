@@ -7,28 +7,30 @@ using IniParser.Model;
 
 namespace ProjectPeladen
 {
-    public partial class bfbc2_window : Window
+    public partial class Bfbc2_window : Window
     {
         string binFolderPath;
         string movFolderPath;
         string cfgFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BFBC2";
-        string masterServerIP;
 
-        public bfbc2_window()
+        public Bfbc2_window()
         {
             InitializeComponent();
 
-            // GET last config
-            Bfbc2_Path_Textbox.Text = Function.GetIniValue(section: "BFBC2", key: "gameDir");
-            Bfbc2_MasterServerIP_Textbox.Text = Function.GetIniValue(section: "BFBC2", key: "masterServerIP");
-            Bfbc2_SkipIntro_CheckBox.IsChecked = Convert.ToBoolean(Function.GetIniValue(section: "BFBC2", key: "skipIntro"));
+            // load saved launcher config
+            Bfbc2_Path_Textbox.Text = Properties.Settings.Default.BFBC2_LastGameDir;
+            Bfbc2_MasterServerIP_Textbox.Text = Properties.Settings.Default.BFBC2_MasterServerIP;
+            Bfbc2_SkipIntro_CheckBox.IsChecked = Properties.Settings.Default.BFBC2_SkipIntro;
+            Bfbc2_Resolusi_ComboBox.SelectedIndex = Properties.Settings.Default.BFBC2_Resolution;
+            Bfbc2_Fov_ComboBox.SelectedIndex = Properties.Settings.Default.BFBC2_FOV;
+            Bfbc2_ModeKentang_CheckBox.IsChecked = Properties.Settings.Default.BFBC2_ModeKentang;
 
-            if (Bfbc2_Path_Textbox.Text == null)
-            {
+            if (Bfbc2_Path_Textbox.Text != null)
                 Bfbc2_isEnabledControl(false);
-            }
+            else
+                Bfbc2_isEnabledControl(true);
 
-            Bfbc2_Resolusi_ComboBox.IsEnabled = false;
+            Bfbc2_ModeKentang_Control();
         }
 
 #region BFBC2 WINDOW EVENT
@@ -44,12 +46,10 @@ namespace ProjectPeladen
                 case System.Windows.Forms.DialogResult.OK:
                     Bfbc2_Path_Textbox.Text = ofd.FileName.Remove(ofd.FileName.Length - 13); // hasil path seko dialog box bakal di kurangi 7 char seko mburi, ben entuk dir path
 
-                    binFolderPath = Bfbc2_Path_Textbox.Text;
-                    movFolderPath = binFolderPath + @"Output\win32\movies";
-
-                    // UPDATE menu control
+                    // update GUI control
                     Bfbc2_isEnabledControl(true);
-                    Bfbc2_Resolusi_ComboBox.IsEnabled = false;
+                    Bfbc2_ModeKentang_Control();
+
                     break;
 
                 case System.Windows.Forms.DialogResult.Cancel:
@@ -84,15 +84,18 @@ namespace ProjectPeladen
             FileIniDataParser Ini = new FileIniDataParser();
 
             // save config
-            Function.SetIniValue(section: "BFBC2", key: "gameDir", value: binFolderPath);
-            Function.SetIniValue(section: "BFBC2", key: "masterServerIP", value: masterServerIP);
-            Function.SetIniValue(section: "BFBC2", key: "skipIntro", value: Convert.ToString(Bfbc2_SkipIntro_CheckBox.IsChecked));
+            Properties.Settings.Default.BFBC2_LastGameDir       = Bfbc2_Path_Textbox.Text;
+            Properties.Settings.Default.BFBC2_MasterServerIP    = Bfbc2_MasterServerIP_Textbox.Text;
+            Properties.Settings.Default.BFBC2_SkipIntro         = Convert.ToBoolean(Bfbc2_SkipIntro_CheckBox.IsChecked);
+            Properties.Settings.Default.BFBC2_ModeKentang       = Convert.ToBoolean(Bfbc2_ModeKentang_CheckBox.IsChecked);
+            Properties.Settings.Default.BFBC2_FOV               = Bfbc2_Fov_ComboBox.SelectedIndex;
+            Properties.Settings.Default.BFBC2_Resolution        = Bfbc2_Resolusi_ComboBox.SelectedIndex;
+            Properties.Settings.Default.Save();
 
             // set server ip
-            masterServerIP = Bfbc2_MasterServerIP_Textbox.Text;
             IniData serverConfig = Ini.ReadFile(binFolderPath + "bfbc2.ini");
-            serverConfig["info"]["host"] = masterServerIP;
-            serverConfig["client"]["reroute_http"] = "1";
+            serverConfig["info"]["host"]            = Bfbc2_MasterServerIP_Textbox.Text;
+            serverConfig["client"]["reroute_http"]  = "1";
             Ini.WriteFile(binFolderPath + "bfbc2.ini", serverConfig);
 
             // mode kentang
@@ -113,59 +116,61 @@ namespace ProjectPeladen
                 switch (Bfbc2_Resolusi_ComboBox.Text)
                 {
                     case "800x600":
-                        pilihanResolusiWidth = "800";
-                        pilihanResolusiHeight = "600";
+                        pilihanResolusiWidth    = "800";
+                        pilihanResolusiHeight   = "600";
+
                         break;
 
                     case "1280x720":
-                        pilihanResolusiWidth = "1280";
-                        pilihanResolusiHeight = "720";
+                        pilihanResolusiWidth    = "1280";
+                        pilihanResolusiHeight   = "720";
+
                         break;
 
                     case "1366x768":
-                        pilihanResolusiWidth = "1366";
-                        pilihanResolusiHeight = "768";
+                        pilihanResolusiWidth    = "1366";
+                        pilihanResolusiHeight   = "768";
+
                         break;
                 }
 
-                config["WindowSettings"]["Width"] = pilihanResolusiWidth;
-                config["WindowSettings"]["Height"] = pilihanResolusiHeight;
-                config["WindowSettings"]["Fullscreen"] = "true";
-                config["WindowSettings"]["VSync"] = "false";
-                config["Sound"]["Quality"] = "low";
-                config["Graphics"]["Effects"] = "low";
-                config["Graphics"]["Vehicles"] = "low";
-                config["Graphics"]["Overgrowth"] = "low";
-                config["Graphics"]["Undergrowth"] = "low";
-                config["Graphics"]["StaticObjects"] = "low";
-                config["Graphics"]["Terrain"] = "low";
-                config["Graphics"]["Shadows"] = "low";
-                config["Graphics"]["Bloom"] = "false";
-                config["Graphics"]["HSAO"] = "false";
-                config["Graphics"]["MSAA"] = "0";
-                config["Graphics"]["Water"] = "low";
-                config["Graphics"]["MainQuality"] = "custom";
-                config["Graphics"]["Texture"] = "low";
-                config["Graphics"]["DxVersion"] = "9";
-                config["Graphics"]["Aniso"] = "0";
-                config["Graphics"]["Detail"] = "low";
-                config["Graphics"]["RenderAheadLimit"] = "0";
-                
-                if (Convert.ToInt16(Bfbc2_Fov_ComboBox.Text) != 55){
+                if (Convert.ToInt16(Bfbc2_Fov_ComboBox.Text) != 55)
                     config["Graphics"]["Fov"] = Bfbc2_Fov_ComboBox.Text;
-                } else {
+                else
                     config["Graphics"]["Fov"] = "55";
-                }
+
+                config["WindowSettings"]["Width"]       = pilihanResolusiWidth;
+                config["WindowSettings"]["Height"]      = pilihanResolusiHeight;
+                config["WindowSettings"]["Fullscreen"]  = "true";
+                config["WindowSettings"]["VSync"]       = "false";
+                config["Sound"]["Quality"]              = "low";
+                config["Graphics"]["Effects"]           = "low";
+                config["Graphics"]["Vehicles"]          = "low";
+                config["Graphics"]["Overgrowth"]        = "low";
+                config["Graphics"]["Undergrowth"]       = "low";
+                config["Graphics"]["StaticObjects"]     = "low";
+                config["Graphics"]["Terrain"]           = "low";
+                config["Graphics"]["Shadows"]           = "low";
+                config["Graphics"]["Bloom"]             = "false";
+                config["Graphics"]["HSAO"]              = "false";
+                config["Graphics"]["MSAA"]              = "0";
+                config["Graphics"]["Water"]             = "low";
+                config["Graphics"]["MainQuality"]       = "custom";
+                config["Graphics"]["Texture"]           = "low";
+                config["Graphics"]["DxVersion"]         = "9";
+                config["Graphics"]["Aniso"]             = "0";
+                config["Graphics"]["Detail"]            = "low";
+                config["Graphics"]["RenderAheadLimit"]  = "0";
 
                 Ini.WriteFile(cfgFolderPath + @"\settings.ini", config);
             }
 
-            //Function.RunExe(dir: binFolderPath, filename: "BFBC2Game.exe", param:"");
+            Function.RunExe(dir: binFolderPath, filename: "BFBC2Game.exe", param:"");
             this.Close();
         }
 #endregion
 
-#region BFBC2 WINDOW METHOD
+#region BFBC2 METHOD
         private void Bfbc2_isEnabledControl(bool status)
         {
             Bfbc2_Launch_Button.IsEnabled = status;
@@ -174,18 +179,26 @@ namespace ProjectPeladen
             Bfbc2_Resolusi_ComboBox.IsEnabled = status;
             Bfbc2_SkipIntro_CheckBox.IsEnabled = status;
             Bfbc2_Fov_ComboBox.IsEnabled = status;
+
+            binFolderPath = Bfbc2_Path_Textbox.Text;
+            movFolderPath = binFolderPath + @"Output\win32\movies";
+        }
+
+        private void Bfbc2_ModeKentang_Control()
+        {
+            if (Bfbc2_ModeKentang_CheckBox.IsChecked == true)
+                Bfbc2_Resolusi_ComboBox.SelectedIndex = Properties.Settings.Default.BFBC2_Resolution;
+            else
+                Bfbc2_Resolusi_ComboBox.IsEnabled = false;
         }
 
         private void Bfbc2_SkipIntro()
         {
-            if (Bfbc2_SkipIntro_CheckBox.IsChecked == true)
+            if (File.Exists(movFolderPath + @"\ea_logo_hd.res") &&
+                File.Exists(movFolderPath + @"\dolbydigital.res"))
             {
-                if (File.Exists(movFolderPath + @"\ea_logo_hd.res") &&
-                    File.Exists(movFolderPath + @"\dolbydigital.res"))
-                {
-                    File.Move(movFolderPath + @"\ea_logo_hd.res", movFolderPath + @"\SKIP_ea_logo_hd.res");
-                    File.Move(movFolderPath + @"\dolbydigital.res", movFolderPath + @"\SKIP_dolbydigital.res");
-                }
+                File.Move(movFolderPath + @"\ea_logo_hd.res", movFolderPath + @"\SKIP_ea_logo_hd.res");
+                File.Move(movFolderPath + @"\dolbydigital.res", movFolderPath + @"\SKIP_dolbydigital.res");
             }
             else if (File.Exists(movFolderPath + @"\SKIP_ea_logo_hd.res") &&
                      File.Exists(movFolderPath + @"\SKIP_dolbydigital.res"))

@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("ProjectPeladen")]
 [assembly: AssemblyDescription("LAN Party Essensials")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Nur Raditya Mahardika")]
 [assembly: AssemblyProduct("ProjectPeladen")]
 [assembly: AssemblyCopyright("Copyright © 2017 Nur Raditya Mahardika")]
 [assembly: AssemblyTrademark("")]

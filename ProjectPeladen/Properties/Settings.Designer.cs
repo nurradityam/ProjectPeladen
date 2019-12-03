@@ -22,5 +22,89 @@ namespace ProjectPeladen.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Menu_LastSelectedGame {
+            get {
+                return ((int)(this["Menu_LastSelectedGame"]));
+            }
+            set {
+                this["Menu_LastSelectedGame"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BFBC2_LastGameDir {
+            get {
+                return ((string)(this["BFBC2_LastGameDir"]));
+            }
+            set {
+                this["BFBC2_LastGameDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BFBC2_MasterServerIP {
+            get {
+                return ((string)(this["BFBC2_MasterServerIP"]));
+            }
+            set {
+                this["BFBC2_MasterServerIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BFBC2_SkipIntro {
+            get {
+                return ((bool)(this["BFBC2_SkipIntro"]));
+            }
+            set {
+                this["BFBC2_SkipIntro"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BFBC2_FOV {
+            get {
+                return ((int)(this["BFBC2_FOV"]));
+            }
+            set {
+                this["BFBC2_FOV"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BFBC2_ModeKentang {
+            get {
+                return ((bool)(this["BFBC2_ModeKentang"]));
+            }
+            set {
+                this["BFBC2_ModeKentang"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BFBC2_Resolution {
+            get {
+                return ((int)(this["BFBC2_Resolution"]));
+            }
+            set {
+                this["BFBC2_Resolution"] = value;
+            }
+        }
     }
 }
